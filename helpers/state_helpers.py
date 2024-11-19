@@ -153,7 +153,7 @@ def new_game_action(self, mode):
 
 def fill_resolve_AI(self,board):
     print(board);
-    print(self.robot1_start_state)
+    #print(self.robot1_start_state)
     for row in range(1,10):
         for col in range(1,10):
             if (self.robot1_start_state[row - 1][col - 1] == 0):
@@ -260,9 +260,10 @@ def start_game_action(self, mode):
     
     if self.robot1_algorithm == "backtracking":
         board = copy.deepcopy(self.robot1_start_state)
-       # self.solve_sudoku_backtracking(board)
-        self.solve_sudoku_constraint_propagation(board)            
-        #self.fill_resolve_AI(board)
+        #self.solve_sudoku_constraint_propagation(board)            
+        tmp = self.solve_sudoku_backtracking(board)
+        #print(tmp);
+        self.fill_resolve_AI(board)
 
         
     if self.robot1_algorithm == "constraint_propagation":

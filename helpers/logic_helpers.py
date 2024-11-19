@@ -68,6 +68,8 @@ def solve_sudoku_backtracking(self, board):
     empty_cell = self.find_empty_cell(board)
     if not empty_cell:
         # Nếu không còn ô trống nào, tức là Sudoku đã được giải xong
+        self.fill_resolve_AI(board);
+        self.root.exit();
         return True
 
     row, col = empty_cell
@@ -92,7 +94,6 @@ def solve_sudoku_backtracking(self, board):
 
     # Quay lại (backtracking) nếu không tìm được số phù hợp
     return False
-
 
 
 def solve_sudoku_constraint_propagation(self, board):
@@ -134,7 +135,7 @@ def solve_sudoku_constraint_propagation(self, board):
         for num in possible_values(board, row, col):
             board[row][col] = num  # Thử điền số vào ô
             
-            self.robot1_entries[str(row + 1)+str(col + 1)].create_text(15, 15, text=str(num), font=("Arial", 20), anchor="center", fill="green")
+            self.robot1_entries[str(row + 1)+str(col + 1)].create_text(5, 5, text=str(num), font=("Arial", 12), anchor="nw") 
             self.root.update()  # Cập nhật giao diện
             
             # Gọi đệ quy để giải tiếp
@@ -150,8 +151,6 @@ def solve_sudoku_constraint_propagation(self, board):
 
     # Gọi hàm giải với bảng Sudoku ban đầu
     constraint_propagation(board)
-    self.fill_resolve_AI(board)
-
 
     
 def find_empty_cell(self, board):

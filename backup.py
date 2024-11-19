@@ -740,8 +740,9 @@ class Sudoku:
         
         if self.robot1_algorithm == "backtracking":
             board = copy.deepcopy(self.robot1_start_state)
-           # self.solve_sudoku_backtracking(board)
-            self.solve_sudoku_constraint_propagation(board)            
+            tmp = self.solve_sudoku_backtracking(board)
+            #self.solve_sudoku_constraint_propagation(board)        
+            print(tmp)
             self.fill_resolve_AI(board)
 
             

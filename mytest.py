@@ -50,7 +50,7 @@ class Sudoku:
         self.robot1_entries = {}
         self.robot1_algorithm = "backtracking"
         self.robot1_start_state = [];
-        self.board = [];
+        #self.board = [];
 
         self.start_state = []
         self.goal_state = []
