@@ -14,7 +14,8 @@ from helpers.dancing_links import solve_sudoku
 
 class Sudoku:
     def __init__(self, root):
-        self.game_size = 3
+        self.game_size = 4
+        self.step_delay = 10
         self.selected_entry = ""
         self.root = root
         self.root.title("Sudoku")
@@ -65,7 +66,6 @@ class Sudoku:
         self.human_single(self.board_frame, "easy")
         self.stop_flag = False
         
-        self.step_delay = 100
 
     def setup_buttons(self):
         self.buttonSingle = ctk.CTkButton(
@@ -224,7 +224,7 @@ class Sudoku:
         
 
         print(board);
-        
+
         board = solve_sudoku(self, board)
         
         #print(board);

@@ -55,9 +55,9 @@ def generate_sudoku(self, level="medium"):
         if level == "easy":
             self.blanks = 60
         elif level == "medium":
-            self.blanks = 80
+            self.blanks = 70
         elif level == "hard":
-            self.blanks = 100
+            self.blanks = 80
         else:
             raise ValueError("Mức độ chỉ chấp nhận: 'easy', 'medium' hoặc 'hard'.")
 

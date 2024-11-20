@@ -72,7 +72,7 @@ def human_vs_robot(self, board_frame):
     bottom_frame = tk.Frame(board_frame, height=75,bg="#FDE2BC")
     bottom_frame.pack(fill="x")
     
-    buttonStart = ctk.CTkButton(bottom_frame, text="Start", fg_color="#25980E", text_color="white",font=("Arial", 14, "bold"), corner_radius=6,width=100, height=40, command = lambda: self.start_game_action(mode))
+    buttonStart = ctk.CTkButton(bottom_frame, text="Start", fg_color="#25980E", text_color="white",font=("Arial", 14, "bold"), corner_radius=6,width=100, height=40, command = lambda: self.start_game_action("backtracking"))
     buttonStart.grid(row=0, column=0, padx=30)
 
     

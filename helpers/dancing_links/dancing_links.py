@@ -18,15 +18,15 @@ def dlx(self, a: Matrix2D , grid: List[List[int]]) -> Generator[Solution, None, 
 
 
     assert (
-        len(grid) == 9
-        and all((len(x) == 9 for x in grid))
-        and all(isinstance(x, int) and 0 <= x <= 9 for x in chain(*grid))
+        len(grid) == self.game_size**2
+        and all((len(x) == self.game_size**2 for x in grid))
+        and all(isinstance(x, int) and 0 <= x <= self.game_size**2 for x in chain(*grid))
     )
     
     possibilities = [
         (r, c, n)
-        for r, c in product(range(9), range(9))
-        for n in (range(9) if grid[r][c] == 0 else (grid[r][c] - 1,))
+        for r, c in product(range(self.game_size**2), range(self.game_size**2))
+        for n in (range(self.game_size**2) if grid[r][c] == 0 else (grid[r][c] - 1,))
     ]
 
 
