@@ -79,9 +79,9 @@ def solve_sudoku_backtracking(self, board):
         if self.is_valid(board, row, col, num):
             board[row][col] = num  # Đặt số nếu hợp lệ
             
-            self.robot1_entries[str(row + 1)+str(col + 1)].create_text(5, 5, text=str(num), font=("Arial", 12), anchor="nw")  # Đặt số ở góc trái trên
+            #self.robot1_entries[str(row + 1)+str(col + 1)].create_text(5, 5, text=str(num), font=("Arial", 12), anchor="nw")  # Đặt số ở góc trái trên
             
-            self.root.update()  # Cập nhật giao diện
+            #self.root.update()  # Cập nhật giao diện
             
             # Gọi đệ quy hàm solve_sudoku_backtracking
             if self.solve_sudoku_backtracking(board):
@@ -135,8 +135,8 @@ def solve_sudoku_constraint_propagation(self, board):
         for num in possible_values(board, row, col):
             board[row][col] = num  # Thử điền số vào ô
             
-            self.robot1_entries[str(row + 1)+str(col + 1)].create_text(5, 5, text=str(num), font=("Arial", 12), anchor="nw") 
-            self.root.update()  # Cập nhật giao diện
+            #self.robot1_entries[str(row + 1)+str(col + 1)].create_text(5, 5, text=str(num), font=("Arial", 12), anchor="nw") 
+            #self.root.update()  # Cập nhật giao diện
             
             # Gọi đệ quy để giải tiếp
             if constraint_propagation(board):

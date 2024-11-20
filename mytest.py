@@ -9,7 +9,8 @@ from helpers.ui_helpers import *
 from helpers.logic_helpers import *
 from helpers.state_helpers import *
 from helpers.file_helpers import *
-
+from helpers.dancing_links import *
+from helpers.dancing_links import solve_sudoku
 
 class Sudoku:
     def __init__(self, root):
@@ -207,7 +208,26 @@ class Sudoku:
         
     def switch_page(self, string, mode):
         switch_page(self, string, mode)
-    
+        
+    def solve_sudoku_dancing_links(self, board):
+        
+
+        print(board);
+        
+        board = solve_sudoku(self, board)
+        
+        print(board);
+        
+        self.fill_resolve_AI(board)
+        
+        
+    def enter_robot_entries(self, row, col, num):
+        if (self.robot1_start_state[row][col] == 0):
+            self.robot1_entries[str(row + 1)+str(col + 1)].create_text(5, 5, text=str(num+1), font=("Arial", 12), anchor="nw")  # Đặt số ở góc trái trên
+            self.root.update()  # Cập nhật giao diện
+            self.root.after(100)
+
+     
 if __name__ == "__main__":
     root = tk.Tk()
     game = Sudoku(root)

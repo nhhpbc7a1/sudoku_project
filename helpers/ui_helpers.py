@@ -334,3 +334,136 @@ def show_level_buttons(self):
         
     self.level_buttons_visible = not self.level_buttons_visible
     
+
+
+            
+def robot_single(self, board_frame, mode):
+    mode = "hard"
+    for widget in board_frame.winfo_children():
+            widget.destroy()
+            
+    # top-right part
+    top_frame = tk.Frame(board_frame, bg="#FDE2BC", height=50)
+    top_frame.pack(fill="x")
+    # top-right part
+    mistakes_label = tk.Label(top_frame, text="Mistakes:", fg="black",bg="#FDE2BC", font=("Arial", 12))
+    mistakes_label.grid(row=0, column=0, padx=(30,2),pady=10)
+    self.mistakes_cnt = tk.Label(top_frame, text="0", fg="black",bg="#FDE2BC", font=("Arial", 12))
+    self.mistakes_cnt.grid(row=0, column=1, padx=0,pady=10)
+    self.cnt_mistake = 0;
+    self.mistakes_cnt.config(text=str(self.cnt_mistake))
+    
+    level_label = tk.Label(top_frame, text=mode, fg="#E2810C",bg="#FDE2BC", font=("Arial", 12, "bold"))
+    level_label.grid(row=0, column=2, padx=40,pady=10)
+
+    timer_label = tk.Label(top_frame, text="Time: ", fg="black",bg="#FDE2BC", font=("Arial", 12,"bold"))
+    timer_label.grid(row=0, column=3, padx=(0,5),pady=10)
+    
+    self.time_display = tk.Label(top_frame, text="00:00", fg="black", bg="#FDE2BC", font=("Arial", 12, "bold"))
+    self.time_display.grid(row=0, column=4, padx=(0,5), pady=10)
+    
+    self.seconds = 0
+    self.running = False
+            
+    # sodoku board
+    #middle part
+    middle_frame = tk.Frame(board_frame,bg="#FDE2BC", height=300)
+    middle_frame.pack(fill="both", expand=True)
+    
+    middle_frame.grid_columnconfigure(0, weight=50)  # Cột trái chiếm 65%
+    middle_frame.grid_columnconfigure(1, weight=50)  # Cột phải chiếm 35%
+    #hesesfs
+    #events
+
+    # middle left-part
+    left_middle_frame = tk.Canvas(middle_frame, width= 300, height=300, bg="#FDE2BC", highlightthickness=1, highlightbackground="black")
+    left_middle_frame.grid(row=0, column=0, sticky="nsw", padx=(20,0))
+
+    self.create_robot_board(left_middle_frame, mode);       
+         
+    
+    
+    #right_middle_frame = tk.Canvas(middle_frame, width= 300, height=300, bg="#FDE2BC", highlightthickness=1, highlightbackground="black")
+    #right_middle_frame.grid(row=0, column=1, sticky="nse", padx=(0,20))
+
+    #self.create_board(right_middle_frame);                    
+    
+
+
+    #  bottom right frame
+    almostbottom_frame = tk.Frame(board_frame, height=75,bg="#FDE2BC")
+    almostbottom_frame.pack(fill="x")
+    
+    spacer = tk.Label(almostbottom_frame, width=2, bg="#FDE2BC")
+    spacer.grid(row=0, column=0,padx=45)
+    for i in range(1, 10):
+        button = ctk.CTkButton(almostbottom_frame, text=str(i), font=("Arial", 20, "bold"),text_color="#C72424", width=45, height=55, fg_color="#F9C57D",corner_radius=5, command=lambda num = i: self.set_value(num))
+        button.grid(row=0, column=i, padx=5, pady=5)
+
+    #  bottom right frame
+
+    bottom_frame = tk.Frame(board_frame, height=75,bg="#FDE2BC")
+    bottom_frame.pack(fill="x")
+    
+    buttonStart = ctk.CTkButton(bottom_frame, text="Start", fg_color="#25980E", text_color="white",font=("Arial", 14, "bold"), corner_radius=6,width=100, height=40, command = lambda: self.start_game_action(mode))
+    buttonStart.grid(row=0, column=0, padx=30)
+
+    
+    iconUndo = ImageTk.PhotoImage(load_sudoku_img("icons8-undo-30.png"))
+    btnUndo = ctk.CTkButton(
+       bottom_frame,
+       text="Undo",
+       image=iconUndo,
+       compound="top",
+       font=("Arial", 14, "bold"),
+       fg_color="#F4CE98",
+       text_color="Black",
+       width=55, height=35,)
+    btnUndo.grid(row=0, column=1, padx=(40,10),pady=20)
+    iconErase = ImageTk.PhotoImage(load_sudoku_img("icons8-erase-30.png"))
+    btnErase = ctk.CTkButton(
+       bottom_frame,
+       text="Erase",
+       image=iconErase,
+       compound="top",
+       font=("Arial", 14, "bold"),
+       fg_color="#F4CE98",
+       text_color="Black",
+       command = lambda: self.erase(),
+       width=55, height=35,)
+    btnErase.grid(row=0, column=2, padx=15,pady=20)
+    
+    self.iconPencil = ImageTk.PhotoImage(load_sudoku_img("icons8-pencil-30.png"))
+    self.btnPencil = ctk.CTkButton(
+       bottom_frame,
+       text="Pencil",
+       image=self.iconPencil,
+       compound="top",
+       font=("Arial", 14, "bold"),
+       fg_color="#F4CE98",
+       text_color="Black",
+       command = lambda: self.pencil_action(),
+       width=50, height=35,)
+
+    self.btnPencil.grid(row=0, column=3, padx=(15,0),pady=20)
+    self.pencil_status = tk.Label(bottom_frame, text="off", fg="black",bg="#FDE2BC", font=("Arial", 12))
+    self.pencil_status.grid(row=0, column=4, padx=0,pady=20)
+
+    
+    
+    iconHint = ImageTk.PhotoImage(load_sudoku_img("icons8-hint-30.png"))
+    btnHint = ctk.CTkButton(
+       bottom_frame,
+       text="Hint",
+       image=iconHint,
+       compound="top",
+       font=("Arial", 14, "bold"),
+       fg_color="#F4CE98",
+       text_color="Black",
+       width=55, height=35,)
+    btnHint.grid(row=0, column=5, padx=15,pady=20)
+    
+    newGame = ctk.CTkButton(bottom_frame, text="New Game", fg_color="#F64444", text_color="white",font=("Arial", 14, "bold"), corner_radius=6,width=70, height=40, command = lambda : self.new_game_action(mode))
+    newGame.grid(row=0, column=6,pady=20, padx=(40,0))
+    self.mode = "hard"
+

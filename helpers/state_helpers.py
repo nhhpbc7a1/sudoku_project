@@ -152,7 +152,8 @@ def new_game_action(self, mode):
     self.mistakes_cnt.config(text=str(self.cnt_mistake))
 
 def fill_resolve_AI(self,board):
-    print(board);
+    for row in range(1,10):
+        print(board[row-1]);
     #print(self.robot1_start_state)
     for row in range(1,10):
         for col in range(1,10):
@@ -258,8 +259,17 @@ def start_game_action(self, mode):
     self.is_playing = True    
     self.start_timer()
     
+    board = copy.deepcopy(self.robot1_start_state)
+
+    #self.solve_sudoku_backtracking(board);
+    #self.solve_sudoku_constraint_propagation(board);
+    self.solve_sudoku_dancing_links(board);
+    
+
+
+    return;
+    
     if self.robot1_algorithm == "backtracking":
-        board = copy.deepcopy(self.robot1_start_state)
         #self.solve_sudoku_constraint_propagation(board)            
         tmp = self.solve_sudoku_backtracking(board)
         #print(tmp);
@@ -267,6 +277,6 @@ def start_game_action(self, mode):
 
         
     if self.robot1_algorithm == "constraint_propagation":
-        board = copy.deepcopy(self.robot1_start_state)
         self.solve_sudoku_constraint_propagation(board)            
         self.fill_resolve_AI(board)
+        
