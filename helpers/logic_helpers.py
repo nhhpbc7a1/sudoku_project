@@ -39,15 +39,28 @@ def generate_sudoku(self, level="medium"):
     board = fill_board(board)
     self.goal_state = board.tolist()
 
-    # Xác định số ô sẽ xóa dựa vào mức độ khó
-    if level == "easy":
-        self.blanks = 1
-    elif level == "medium":
-        self.blanks = 40
-    elif level == "hard":
-        self.blanks = 50
-    else:
-        raise ValueError("Mức độ chỉ chấp nhận: 'easy', 'medium' hoặc 'hard'.")
+    if (self.game_size == 3):
+        # Xác định số ô sẽ xóa dựa vào mức độ khó
+        if level == "easy":
+            self.blanks = 1
+        elif level == "medium":
+            self.blanks = 40
+        elif level == "hard":
+            self.blanks = 50
+        else:
+            raise ValueError("Mức độ chỉ chấp nhận: 'easy', 'medium' hoặc 'hard'.")
+        
+    if (self.game_size == 4):
+
+        if level == "easy":
+            self.blanks = 60
+        elif level == "medium":
+            self.blanks = 80
+        elif level == "hard":
+            self.blanks = 100
+        else:
+            raise ValueError("Mức độ chỉ chấp nhận: 'easy', 'medium' hoặc 'hard'.")
+
 
     # Xóa ngẫu nhiên các ô để tạo bảng Sudoku chưa hoàn chỉnh
     for _ in range(self.blanks):
@@ -196,7 +209,7 @@ def is_valid(self, board, row, col, num):
             return False
 
     # Kiểm tra ô 3x3
-    start_row, start_col = 3 * (row // 3), 3 * (col // 3)
+    start_row, start_col = self.game_size * (row // self.game_size), self.game_size * (col // self.game_size)
     for i in range(self.game_size):
         for j in range(self.game_size):
             if board[start_row + i][start_col + j] == num:

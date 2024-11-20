@@ -14,7 +14,7 @@ from helpers.dancing_links import solve_sudoku
 
 class Sudoku:
     def __init__(self, root):
-        self.game_size = 4
+        self.game_size = 3
         self.selected_entry = ""
         self.root = root
         self.root.title("Sudoku")
@@ -221,7 +221,7 @@ class Sudoku:
         
         board = solve_sudoku(self, board)
         
-        print(board);
+        #print(board);
         
         self.fill_resolve_AI(board)
         

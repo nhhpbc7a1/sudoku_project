@@ -133,8 +133,10 @@ def new_game_action(self, mode):
     self.mistakes_cnt.config(text=str(self.cnt_mistake))
 
 def fill_resolve_AI(self,board):
-    for row in range(self.game_size**2):
-        print(board[row]);
+    #for row in range(self.game_size**2):
+        #print(board[row]);
+        
+        
     #print(self.robot1_start_state)
     for row in range(self.game_size**2):
         for col in range(self.game_size**2):
@@ -159,7 +161,7 @@ def erase(self):
     
 def enter_start_number(self, number):
     
-    print(self.selected_entry);
+    #print(self.selected_entry);
     #print(type (self.entries[self.selected_entry]))
     
     if (self.entries != {}):
@@ -244,7 +246,7 @@ def done_game_action(self, winner):
     messagebox.showinfo("Hoàn thành", winner +  f" chiến thắng.\n Thời gian hoàn thành: {minutes:02}:{seconds:02}")
     
 
-def start_game_action(self, mode):
+def start_game_action(self, algorithm_name):
     self.is_playing = True    
     self.start_timer()
     
@@ -255,20 +257,19 @@ def start_game_action(self, mode):
     #self.solve_sudoku_dancing_links(board);
     #return;
     
-    if self.robot1_algorithm == "backtracking":
+    if algorithm_name == "backtracking":
         #self.solve_sudoku_constraint_propagation(board)            
         tmp = self.solve_sudoku_backtracking(board)
         #print(tmp);
         self.fill_resolve_AI(board)
 
         
-    if self.robot1_algorithm == "constraint_propagation":
+    if algorithm_name == "constraint_propagation":
         self.solve_sudoku_constraint_propagation(board)            
         self.fill_resolve_AI(board)
         
-    if self.robot1_algorithm == "dancing_links":
+    if algorithm_name == "dancing_links":
         self.solve_sudoku_dancing_links(board)            
-        self.fill_resolve_AI(board)
 
 
 def int_to_alpha(x):
