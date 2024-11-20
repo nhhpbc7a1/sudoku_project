@@ -105,8 +105,8 @@ def solve_sudoku_backtracking(self, board):
             
             self.root.update()  # Cập nhật giao diện
             
-            #if (self.stop_flag == False):
-                #self.root.after(1000)  
+            if (self.stop_flag == False):
+                self.root.after(self.step_delay)  
 
             
             # Gọi đệ quy hàm solve_sudoku_backtracking
@@ -168,8 +168,8 @@ def solve_sudoku_constraint_propagation(self, board):
             self.robot1_entries[int_to_alpha(row)+int_to_alpha(col)].create_text(5, 5, text=str(num), font=("Arial", 12), anchor="nw") 
             self.root.update()  # Cập nhật giao diện
             
-            #if (self.stop_flag == False):
-                #self.root.after(1000)
+            if (self.stop_flag == False):
+                self.root.after(self.step_delay)
                 
             # Gọi đệ quy để giải tiếp
             if constraint_propagation(board):

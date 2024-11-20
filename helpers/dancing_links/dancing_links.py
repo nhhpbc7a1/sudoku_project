@@ -56,10 +56,6 @@ def dlx(self, a: Matrix2D , grid: List[List[int]]) -> Generator[Solution, None, 
                 print(tmp_r, " ", tmp_c, " ", tmp_n+1);
                 
                 self.enter_robot_entries(tmp_r, tmp_c, tmp_n)
-                #self.robot1_entries[str(tmp_r + 1)+str(tmp_c + 1)].create_text(5, 5, text=str(tmp_n+1), font=("Arial", 12), anchor="nw")  # Đặt số ở góc trái trên
-                
-                #self.root.update()  # Cập nhật giao diện
-
                 
                 stack.append(r)
                 for j in loop_through(r, "r"):

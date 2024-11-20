@@ -64,6 +64,8 @@ class Sudoku:
 
         self.human_single(self.board_frame, "easy")
         self.stop_flag = False
+        
+        self.step_delay = 100
 
     def setup_buttons(self):
         self.buttonSingle = ctk.CTkButton(
@@ -214,7 +216,11 @@ class Sudoku:
     def switch_page(self, string, mode):
         switch_page(self, string, mode)
         
+    def pencil_action(self):
+        pencil_action(self);
+        
     def solve_sudoku_dancing_links(self, board):
+        
         
 
         print(board);
@@ -230,7 +236,7 @@ class Sudoku:
         if (self.robot1_start_state[row][col] == 0):
             self.robot1_entries[int_to_alpha(row)+int_to_alpha(col)].create_text(5, 5, text=str(num+1), font=("Arial", 12), anchor="nw")  # Đặt số ở góc trái trên
             self.root.update()  # Cập nhật giao diện
-            #self.root.after(1000) 
+            self.root.after(self.step_delay) 
 
     
 

@@ -112,9 +112,10 @@ def human_vs_robot(self, board_frame):
        command = lambda: self.pencil_action(),
        width=50, height=35,)
 
-    self.btnPencil.grid(row=0, column=3, padx=(15,0),pady=20)
-    self.pencil_status = tk.Label(bottom_frame, text="off", fg="black",bg="#FDE2BC", font=("Arial", 12))
-    self.pencil_status.grid(row=0, column=4, padx=0,pady=20)
+    self.btnPencil.grid(row=0, column=3, padx=(15,0),pady=(20,20))
+    self.pencil_status = tk.Label(bottom_frame, text="off", fg="black",bg="red", font=("Arial", 12))
+    self.pencil_status.grid(row=0, column=4, padx=(0,0),pady=(0,20))
+    
 
     
     
@@ -236,7 +237,7 @@ def human_single(self, board_frame, mode):
        width=50, height=35,)
 
     self.btnPencil.grid(row=0, column=3, padx=(15,0),pady=20)
-    self.pencil_status = tk.Label(bottom_frame, text="off", fg="black",bg="#FDE2BC", font=("Arial", 12))
+    self.pencil_status = tk.Label(bottom_frame, text="off", fg="black",bg="red", font=("Arial", 12))
     self.pencil_status.grid(row=0, column=4, padx=0,pady=20)
 
     
@@ -469,7 +470,7 @@ def robot_single(self, board_frame, algorithm_name):
        width=50, height=35,)
 
     self.btnPencil.grid(row=0, column=3, padx=(15,0),pady=20)
-    self.pencil_status = tk.Label(bottom_frame, text="off", fg="black",bg="#FDE2BC", font=("Arial", 12))
+    self.pencil_status = tk.Label(bottom_frame, text="off", fg="black",bg="red", font=("Arial", 12))
     self.pencil_status.grid(row=0, column=4, padx=0,pady=20)
 
     
