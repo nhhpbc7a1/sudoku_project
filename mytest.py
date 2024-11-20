@@ -14,11 +14,11 @@ from helpers.dancing_links import solve_sudoku
 
 class Sudoku:
     def __init__(self, root):
-        self.game_size = 3
+        self.game_size = 4
         self.selected_entry = ""
         self.root = root
         self.root.title("Sudoku")
-        self.root.geometry("900x550")
+        self.root.geometry("1000x550")
         self.root.configure(bg="#FDE2BC")
 
         # Sidebar setup
@@ -63,6 +63,7 @@ class Sudoku:
         self.running = False
 
         self.human_single(self.board_frame, "easy")
+        self.stop_flag = False
 
     def setup_buttons(self):
         self.buttonSingle = ctk.CTkButton(
@@ -169,6 +170,10 @@ class Sudoku:
     
     def human_vs_robot(self, board_frame):
         human_vs_robot(self, board_frame)
+        
+    def robot_single(self, board_frame, mode):
+        robot_single(self, board_frame, mode)
+
 
     def fill_game_board(self, mode):
         fill_game_board(self, mode)
@@ -223,11 +228,15 @@ class Sudoku:
         
     def enter_robot_entries(self, row, col, num):
         if (self.robot1_start_state[row][col] == 0):
-            self.robot1_entries[str(row + 1)+str(col + 1)].create_text(5, 5, text=str(num+1), font=("Arial", 12), anchor="nw")  # Đặt số ở góc trái trên
+            self.robot1_entries[int_to_alpha(row)+int_to_alpha(col)].create_text(5, 5, text=str(num+1), font=("Arial", 12), anchor="nw")  # Đặt số ở góc trái trên
             self.root.update()  # Cập nhật giao diện
-            self.root.after(100)
+            #self.root.after(1000) 
 
-     
+    
+
+def int_to_alpha(x):
+    return chr(x + ord('A'));
+
 if __name__ == "__main__":
     root = tk.Tk()
     game = Sudoku(root)

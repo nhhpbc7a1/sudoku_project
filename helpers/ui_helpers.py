@@ -273,8 +273,9 @@ def create_board(self, frame):
             for cell_col in range(self.game_size):
                 for cell_row in range(self.game_size):
                     v = tk.StringVar()
-                    col = '123456789'[3*box_col + cell_col]
-                    row = '123456789'[3*box_row + cell_row]
+                    
+                    col = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[self.game_size*box_col + cell_col]
+                    row = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[self.game_size*box_row + cell_row]
                     key = col + row
                     self.values[key] = v
                     
@@ -297,8 +298,8 @@ def create_robot_board(self, frame, algorithm_name):
             for cell_col in range(self.game_size):
                 for cell_row in range(self.game_size):
                     v = tk.StringVar()
-                    col = '123456789'[3*box_col + cell_col]
-                    row = '123456789'[3*box_row + cell_row]
+                    col = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[self.game_size*box_col + cell_col]
+                    row = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[self.game_size*box_row + cell_row]
                     key = col + row
                     self.robot1_values[key] = v
                     
@@ -334,10 +335,27 @@ def show_level_buttons(self):
         
     self.level_buttons_visible = not self.level_buttons_visible
     
+def show_AI_options_buttons(self):
+    if self.level_buttons_visible:
+        self.easy_button.grid_remove()
+        self.middle_button.grid_remove()
+        self.hard_button.grid_remove()
+    else:  
+        self.easy_button = ctk.CTkButton(self.sidebar, text="Backtracking",fg_color="#F64444", font=("Arial", 14,"bold"),corner_radius=6, width=150, command=lambda: self.check_and_confirm("robot_single", "backtracking"))
+        self.easy_button.grid(row=7, column=0, padx=30,pady=(0,2))
+                    
+        self.middle_button = ctk.CTkButton(self.sidebar, text="Constraint Propagation",fg_color="#F64444", font=("Arial", 14,"bold"),corner_radius=6, width=150, command=lambda: self.check_and_confirm("robot_single", "constraint_propagation"))
+        self.middle_button.grid(row=8, column=0, padx=30,pady=2)
+                    
+        self.hard_button = ctk.CTkButton(self.sidebar, text="Dancing Link",fg_color="#F64444", font=("Arial", 14,"bold"),corner_radius=6, width=150, command=lambda: self.check_and_confirm("robot_single", "dancing_links"))
+        self.hard_button.grid(row=9, column=0, padx=30,pady=2)
+        
+    self.level_buttons_visible = not self.level_buttons_visible
+    
 
 
             
-def robot_single(self, board_frame, mode):
+def robot_single(self, board_frame, algorithm_name):
     mode = "hard"
     for widget in board_frame.winfo_children():
             widget.destroy()
@@ -353,7 +371,7 @@ def robot_single(self, board_frame, mode):
     self.cnt_mistake = 0;
     self.mistakes_cnt.config(text=str(self.cnt_mistake))
     
-    level_label = tk.Label(top_frame, text=mode, fg="#E2810C",bg="#FDE2BC", font=("Arial", 12, "bold"))
+    level_label = tk.Label(top_frame, text=algorithm_name, fg="#E2810C",bg="#FDE2BC", font=("Arial", 12, "bold"))
     level_label.grid(row=0, column=2, padx=40,pady=10)
 
     timer_label = tk.Label(top_frame, text="Time: ", fg="black",bg="#FDE2BC", font=("Arial", 12,"bold"))
@@ -391,21 +409,26 @@ def robot_single(self, board_frame, mode):
 
 
     #  bottom right frame
+    
+    '''
     almostbottom_frame = tk.Frame(board_frame, height=75,bg="#FDE2BC")
     almostbottom_frame.pack(fill="x")
     
     spacer = tk.Label(almostbottom_frame, width=2, bg="#FDE2BC")
     spacer.grid(row=0, column=0,padx=45)
+    
     for i in range(1, 10):
         button = ctk.CTkButton(almostbottom_frame, text=str(i), font=("Arial", 20, "bold"),text_color="#C72424", width=45, height=55, fg_color="#F9C57D",corner_radius=5, command=lambda num = i: self.set_value(num))
         button.grid(row=0, column=i, padx=5, pady=5)
+    '''
+
 
     #  bottom right frame
 
     bottom_frame = tk.Frame(board_frame, height=75,bg="#FDE2BC")
     bottom_frame.pack(fill="x")
     
-    buttonStart = ctk.CTkButton(bottom_frame, text="Start", fg_color="#25980E", text_color="white",font=("Arial", 14, "bold"), corner_radius=6,width=100, height=40, command = lambda: self.start_game_action(mode))
+    buttonStart = ctk.CTkButton(bottom_frame, text="Start", fg_color="#25980E", text_color="white",font=("Arial", 14, "bold"), corner_radius=6,width=100, height=40, command = lambda: self.start_game_action(algorithm_name))
     buttonStart.grid(row=0, column=0, padx=30)
 
     

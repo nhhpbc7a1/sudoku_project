@@ -33,54 +33,29 @@ def check_and_confirm(self, string, mode):
 
 def switch_page(self, string, mode):
     self.clear_memset();
+    self.stop_flag = True
 
      # Thực hiện thao tác chuyển trang tại đây        
     if string == "human_vs_robot":
         self.human_vs_robot(self.board_frame);
     elif string == "human_single":
         self.human_single(self.board_frame, mode)
+    elif string == "robot_single":
+        self.robot_single(self.board_frame, mode)
+            
+    self.stop_flag = False;
 
 def fill_game_board(self, mode):
     self.generate_sudoku(mode);
     
-    for row in range(1,10):
-        for col in range(1,10):
-            self.selected_entry = str(row) + str(col);
-            self.enter_start_number(self.start_state[row - 1][col - 1])
+    for row in range(self.game_size**2):
+        for col in range(self.game_size**2):
+            self.selected_entry = chr(ord('A') + row) + chr(ord('A') + col)
+            self.enter_start_number(self.start_state[row][col])
 
-def show_level_buttons(self):
-    if self.level_buttons_visible:
-        self.easy_button.grid_remove()
-        self.middle_button.grid_remove()
-        self.hard_button.grid_remove()
-    else:  
-        self.easy_button = ctk.CTkButton(self.sidebar, text="Easy",fg_color="#F64444", font=("Arial", 14,"bold"),corner_radius=6, width=150, command=lambda: self.check_and_confirm("human_single", "easy"))
-        self.easy_button.grid(row=2, column=0, padx=30,pady=(0,2))
-                    
-        self.middle_button = ctk.CTkButton(self.sidebar, text="Middle",fg_color="#F64444", font=("Arial", 14,"bold"),corner_radius=6, width=150, command=lambda: self.check_and_confirm("human_single", "medium"))
-        self.middle_button.grid(row=3, column=0, padx=30,pady=2)
-                    
-        self.hard_button = ctk.CTkButton(self.sidebar, text="Hard",fg_color="#F64444", font=("Arial", 14,"bold"),corner_radius=6, width=150, command=lambda: self.check_and_confirm("human_single", "hard"))
-        self.hard_button.grid(row=4, column=0, padx=30,pady=2)
-        
-    self.level_buttons_visible = not self.level_buttons_visible
-    
-def show_AI_options_buttons(self):
-    if self.level_buttons_visible:
-        self.easy_button.grid_remove()
-        self.middle_button.grid_remove()
-        self.hard_button.grid_remove()
-    else:  
-        self.easy_button = ctk.CTkButton(self.sidebar, text="Backtracking",fg_color="#F64444", font=("Arial", 14,"bold"),corner_radius=6, width=150, command=lambda: self.check_and_confirm("human_single", "easy"))
-        self.easy_button.grid(row=7, column=0, padx=30,pady=(0,2))
-                    
-        self.middle_button = ctk.CTkButton(self.sidebar, text="Constraint Propagation",fg_color="#F64444", font=("Arial", 14,"bold"),corner_radius=6, width=150, command=lambda: self.check_and_confirm("human_single", "medium"))
-        self.middle_button.grid(row=8, column=0, padx=30,pady=2)
-                    
-        self.hard_button = ctk.CTkButton(self.sidebar, text="Dancing Link",fg_color="#F64444", font=("Arial", 14,"bold"),corner_radius=6, width=150, command=lambda: self.check_and_confirm("human_single", "hard"))
-        self.hard_button.grid(row=9, column=0, padx=30,pady=2)
-        
-    self.level_buttons_visible = not self.level_buttons_visible
+
+def alpha_to_int(x):
+    return int(ord(x) - ord('A')) + 1;
 
 def select_entry(self, key):
     """Đánh dấu ô được chọn và các ô liên quan."""
@@ -88,16 +63,21 @@ def select_entry(self, key):
     self.clear_highlight()
     print(key);
     # Tô màu cho ô được chọn và các ô liên quan
-    col, row = key[0], key[1]
+    row = key[0]
+    col = key[1]
+    
     self.entry = key
+    
+    print(alpha_to_int(row),  " ", alpha_to_int(col));
 
     # Tô màu các ô cùng hàng, cột và vùng 3x3
     for k, entry in self.entries.items():
-        entry_col, entry_row = k[0], k[1]
+        entry_row, entry_col = k[0], k[1]
+        print(k);
         same_row = (entry_row == row)
         same_col = (entry_col == col)
-        same_box = ((int(entry_col) - 1) // 3 == (int(col) - 1) // 3) and ((int(entry_row) - 1) // 3 == (int(row) - 1) // 3)
-
+        same_box = ((alpha_to_int(entry_row) - 1) // self.game_size == (alpha_to_int(row) - 1) // self.game_size) and ((alpha_to_int(entry_col) - 1) // self.game_size == (alpha_to_int(col) - 1) // self.game_size) 
+        
         if same_row or same_col or same_box:
             entry.config(bg="#efefef")
     
@@ -110,9 +90,10 @@ def clear_highlight(self):
     for entry in self.entries.values():
         entry.config(bg="white")
 
-def set_value(self, value):
-    row = int(self.selected_entry[0]) - 1
-    col = int(self.selected_entry[1]) - 1
+def set_value(self, value):    
+    row = alpha_to_int(self.selected_entry[0]) - 1
+    col = alpha_to_int(self.selected_entry[1]) - 1
+
 
     """Đặt giá trị vào ô được chọn."""
     
@@ -152,19 +133,23 @@ def new_game_action(self, mode):
     self.mistakes_cnt.config(text=str(self.cnt_mistake))
 
 def fill_resolve_AI(self,board):
-    for row in range(1,10):
-        print(board[row-1]);
+    for row in range(self.game_size**2):
+        print(board[row]);
     #print(self.robot1_start_state)
-    for row in range(1,10):
-        for col in range(1,10):
-            if (self.robot1_start_state[row - 1][col - 1] == 0):
-                self.robot1_entries[str(row)+str(col)].delete("all")
-                self.robot1_entries[str(row)+str(col)].create_text(15, 15, text=str(board[row-1][col-1]), font=("Arial", 20), anchor="center", fill="green")
+    for row in range(self.game_size**2):
+        for col in range(self.game_size**2):
+            if (self.robot1_start_state[row][col] == 0):
+                self.robot1_entries[int_to_alpha(row) + int_to_alpha(col)].delete("all")
+                self.robot1_entries[int_to_alpha(row) + int_to_alpha(col)].create_text(15, 15, text=str(board[row-1][col-1]), font=("Arial", 20), anchor="center", fill="green")
     self.done_game_action("AI backtracking")
 
 def erase(self):
-    row = int(self.selected_entry[0]) - 1
-    col = int(self.selected_entry[1]) - 1
+    #row = int(self.selected_entry[0]) - 1
+    #col = int(self.selected_entry[1]) - 1
+
+
+    row = alpha_to_int(self.selected_entry[0]) - 1
+    col = alpha_to_int(self.selected_entry[1]) - 1
     
     if self.start_state[row][col] == 0:
         self.entries[self.selected_entry].delete("all")
@@ -175,15 +160,18 @@ def erase(self):
 def enter_start_number(self, number):
     
     print(self.selected_entry);
-    print(type (self.entries[self.selected_entry]))
-    self.entries[self.selected_entry].delete("all")  # Xóa nội dung trước đó
+    #print(type (self.entries[self.selected_entry]))
+    
+    if (self.entries != {}):
+        self.entries[self.selected_entry].delete("all")  # Xóa nội dung trước đó
     
     if (self.robot1_entries != {}) :
         self.robot1_entries[self.selected_entry].delete("all")
     color = "black"
     if (number > 0):
             
-        self.entries[self.selected_entry].create_text(15, 15, text=str(number), font=("Arial", 20), anchor="center", fill=color)
+        if (self.entries != {}):
+            self.entries[self.selected_entry].create_text(15, 15, text=str(number), font=("Arial", 20), anchor="center", fill=color)
         if (self.robot1_entries != {}) :
             self.robot1_entries[self.selected_entry].create_text(15, 15, text=str(number), font=("Arial", 20), anchor="center", fill=color)
 
@@ -194,9 +182,10 @@ def enter_large_number(self, number):
         print("=-=============================");
         return
     self.entries[self.selected_entry].delete("all")  # Xóa nội dung trước đó
-    
-    row = int(self.selected_entry[0]) - 1
-    col = int(self.selected_entry[1]) - 1
+        
+    row = alpha_to_int(self.selected_entry[0]) -  1
+    col = alpha_to_int(self.selected_entry[1]) - 1
+
 
     if number == self.goal_state[row][col]:
         self.start_state[row][col] = number
@@ -263,11 +252,8 @@ def start_game_action(self, mode):
 
     #self.solve_sudoku_backtracking(board);
     #self.solve_sudoku_constraint_propagation(board);
-    self.solve_sudoku_dancing_links(board);
-    
-
-
-    return;
+    #self.solve_sudoku_dancing_links(board);
+    #return;
     
     if self.robot1_algorithm == "backtracking":
         #self.solve_sudoku_constraint_propagation(board)            
@@ -280,3 +266,10 @@ def start_game_action(self, mode):
         self.solve_sudoku_constraint_propagation(board)            
         self.fill_resolve_AI(board)
         
+    if self.robot1_algorithm == "dancing_links":
+        self.solve_sudoku_dancing_links(board)            
+        self.fill_resolve_AI(board)
+
+
+def int_to_alpha(x):
+    return chr(x + ord('A'));
